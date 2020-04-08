@@ -13,6 +13,7 @@ import { JumboComponent } from './jumbo/jumbo.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { NekretninaDetailComponent } from './nekretnine/nekretnina-detail/nekretnina-detail.component';
 import { NekretnineListComponent } from './nekretnine/nekretnine-list/nekretnine-list.component';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { NekretnineListComponent } from './nekretnine/nekretnine-list/nekretnine
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [NekretnineService],
   bootstrap: [AppComponent]
