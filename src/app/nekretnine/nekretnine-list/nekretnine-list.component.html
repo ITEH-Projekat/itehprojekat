@@ -1,0 +1,5 @@
+<div class="row">
+  <div class="col-md-4 mb-3" *ngFor="let nekretnina of nekretnine; let i = index">
+    <app-nekretnina-element [nekretnina]="nekretnina" [index]="i"></app-nekretnina-element>
+  </div>
+</div>
