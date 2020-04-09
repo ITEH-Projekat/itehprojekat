@@ -2,6 +2,7 @@ import {NekretninaModel} from './nekretnina.model';
 import {Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class NekretnineService {
@@ -50,17 +51,34 @@ export class NekretnineService {
 
   getNekretnine() {
     this.http.get<{message: string, nekretnine: NekretninaModel[]}>('http://localhost:3000/api/nekretnine')
-      .subscribe((postData) => {
-        this.nekretnine = postData.nekretnine;
+      .pipe(map((postData) => {
+        return postData.nekretnine.map(nekretnina => {
+          return {
+           naslov: nekretnina.naslov,
+           opis: nekretnina.opis,
+           kvadratura: nekretnina.kvadratura,
+           cena: nekretnina.cena,
+           slika: nekretnina.slika,
+           id: nekretnina.id
+          };
+        });
+      }))
+      .subscribe((transformedNekr) => {
+        this.nekretnine = transformedNekr;
         this.nekretnineUpdated.next(this.nekretnine.slice());
       });
     return this.nekretnine.slice();
   }
 
   addNekretnina(nekretnina: NekretninaModel) {
-    nekretnina.id = this.nekretnine.length;
-    this.nekretnine.push(nekretnina);
-    this.nekretnineUpdated.next(this.nekretnine.slice());
+    const nekr = {id: null, naslov: nekretnina.naslov, opis: nekretnina.opis, kvadratura: nekretnina.kvadratura, cena: nekretnina.cena, slika: nekretnina.slika};
+    this.http.post<{message: string, nekrId: string}>('http://localhost:3000/api/nekretnine', nekr)
+      .subscribe((response) => {
+        const nekretninaId = response.nekrId;
+        nekr.id = nekretninaId;
+        this.nekretnine.push(nekretnina);
+        this.nekretnineUpdated.next(this.nekretnine.slice());
+      });
   }
 
   getNekretnina(id: number) {

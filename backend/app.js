@@ -1,46 +1,53 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const Nekretnina = require('./models/nekretnina');
+const mongoose = require('mongoose');
+
+mongoose.connect("mongodb://localhost/itehprojekat")
+  .then(() => {
+    console.log('Connected to database!');
+  }).catch(() => {
+    console.log('Connection failed!');
+});
 
 const app = express();
+
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, PUT, OPTIONS");
 
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, PUT, OPTIONS");
+  next();
 });
 
 app.get("/api/nekretnine", (req, res, next)=>{
-  const nekretnine = [
-    {
-      id: 'dsfdsfds',
-      naslov: 'Stan broj 1',
-      opis: 'Veoma lep stan na veoma dobroj lokaciji. Vredi pogledati!',
-      kvadratura: 55,
-      cena: 12100,
-      slika: 'https://foxnekretnine.com/slike/6697311.jpg'
-    },
-    {
-      id: 'yuyhyhy',
-      naslov: 'Stan broj 2',
-      opis: 'Veoma lep stan na veoma dobroj lokaciji. Vredi pogledati!',
-      kvadratura: 55,
-      cena: 64500,
-      slika: 'https://garsonjere-kragujevac.rs/images/blog/povoljni-stanovi-za-izdavanje-kragujevac-velika-4abdc74095.jpg'
-    },
-    {
-      id: 'hgbgfb',
-      naslov: 'Stan broj 3',
-      opis: 'Veoma lep stan na veoma dobroj lokaciji. Vredi pogledati!',
-      kvadratura: 57,
-      cena: 77000,
-      slika: 'https://cityexpert.rs/blog/sites/default/files/slika/pet-friendly-stanovi-za-idavanje.jpg'
-    }
-  ];
-  res.status(200).json({
-    message: 'Uspesno!',
-    nekretnine: nekretnine
+  Nekretnina.find().then(documents => {
+    res.status(200).json({
+      message: 'Uspesno!',
+      nekretnine: documents
+    });
   });
+});
+
+app.post("/api/nekretnine", (req, res, next) => {
+  const nekretnina = new Nekretnina({
+    naslov: req.body.naslov,
+    opis: req.body.opis,
+    kvadratura: req.body.kvadratura,
+    cena: req.body.cena,
+    slika: req.body.slika
+  });
+  console.log(nekretnina);
+  nekretnina.save().then(result => {
+    res.status(201).json({
+      message: 'Nekretnina dodata u bazu!',
+      nekrId: result._id
+    });
+  });
+  // next();
 });
 
 module.exports = app;
