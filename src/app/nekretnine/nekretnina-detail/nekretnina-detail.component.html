@@ -1,7 +1,12 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <div class="card mb-3">
+      <div class="d-flex justify-content-center" *ngIf="isLoading">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div class="card mb-3" *ngIf="!isLoading">
 <!--        <img src="{{nekretnina.slika}}" class="card-img-top" alt="...">-->
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
           <ol class="carousel-indicators">
@@ -11,7 +16,7 @@
           </ol>
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img src="{{nekretnina.slika}}" class="d-block w-100" alt="...">
+              <img src="{{nekretnina?.slika}}" class="d-block w-100" alt="...">
             </div>
           </div>
           <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -24,10 +29,12 @@
           </a>
         </div>
         <div class="card-body">
-          <h5 class="card-title">{{nekretnina.naslov}}</h5>
-          <p class="card-text">{{nekretnina.opis}}</p>
-          <p class="card-text">{{nekretnina.kvadratura}} m2 - {{nekretnina.cena}} €</p>
+          <h5 class="card-title">{{nekretnina?.naslov}}</h5>
+          <p class="card-text">{{nekretnina?.opis}}</p>
+          <p class="card-text">{{nekretnina?.kvadratura}} m2 - {{nekretnina?.cena}} €</p>
           <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          <button class="btn btn-danger" (click)="onDeleteNekretnina(nekretnina.id)">Obrisi oglas</button>
+          <button class="btn btn-primary" (click)="onUpdateNekretnina(nekretnina.id)">Izmeni oglas</button>
         </div>
       </div>
     </div>

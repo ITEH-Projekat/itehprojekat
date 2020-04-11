@@ -12,6 +12,7 @@ const routes: Routes = [
   {path: 'nekretnine', component: NekretnineComponent, children: [
       {path: '', component: JumboComponent},
       {path: 'new', component: DodajNekretninuComponent},
+      {path: ':id/edit', component: DodajNekretninuComponent},
       {path: ':id', component: NekretninaDetailComponent}
     ]},
   {path: 'not-found', component: PageNotFoundComponent},

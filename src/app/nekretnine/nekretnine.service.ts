@@ -3,55 +3,22 @@ import {Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class NekretnineService {
 
   nekretnineUpdated = new Subject<NekretninaModel[]>();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
   }
 
   nekretnine: NekretninaModel[] = [];
 
-  // nekretnine: NekretninaModel[] = [
-  //   {
-  //     id: 0,
-  //     naslov: 'Stan Kontic',
-  //     cena: 255000,
-  //     kvadratura: 55,
-  //     opis: 'Jednosoban stan u centru Beograda.',
-  //     slika: 'https://garsonjere-kragujevac.rs/images/blog/povoljni-stanovi-za-izdavanje-kragujevac-velika-4abdc74095.jpg'
-  //   },
-  //   {
-  //     id: 1,
-  //     naslov: 'Stan Kontic',
-  //     cena: 255000,
-  //     kvadratura: 55,
-  //     opis: 'Jednosoban stan u centru Beograda.',
-  //     slika: 'https://garsonjere-kragujevac.rs/images/blog/povoljni-stanovi-za-izdavanje-kragujevac-velika-4abdc74095.jpg'
-  //   },
-  //   {
-  //     id: 2,
-  //     naslov: 'Stan Kontic',
-  //     cena: 255000,
-  //     kvadratura: 55,
-  //     opis: 'Jednosoban stan u centru Beograda.',
-  //     slika: 'https://garsonjere-kragujevac.rs/images/blog/povoljni-stanovi-za-izdavanje-kragujevac-velika-4abdc74095.jpg'
-  //   },
-  //   {
-  //     id: 3,
-  //     naslov: 'Stan Kontic',
-  //     cena: 255000,
-  //     kvadratura: 55,
-  //     opis: 'Jednosoban stan u centru Beograda.',
-  //     slika: 'https://garsonjere-kragujevac.rs/images/blog/povoljni-stanovi-za-izdavanje-kragujevac-velika-4abdc74095.jpg'
-  //   }
-  // ];
-
   getNekretnine() {
-    this.http.get<{message: string, nekretnine: NekretninaModel[]}>('http://localhost:3000/api/nekretnine')
+    this.http.get<{message: string, nekretnine: any}>('http://localhost:3000/api/nekretnine')
       .pipe(map((postData) => {
+        console.log(postData.nekretnine);
         return postData.nekretnine.map(nekretnina => {
           return {
            naslov: nekretnina.naslov,
@@ -59,12 +26,13 @@ export class NekretnineService {
            kvadratura: nekretnina.kvadratura,
            cena: nekretnina.cena,
            slika: nekretnina.slika,
-           id: nekretnina.id
+           id: nekretnina._id
           };
         });
       }))
       .subscribe((transformedNekr) => {
         this.nekretnine = transformedNekr;
+        console.log(this.nekretnine);
         this.nekretnineUpdated.next(this.nekretnine.slice());
       });
     return this.nekretnine.slice();
@@ -76,12 +44,46 @@ export class NekretnineService {
       .subscribe((response) => {
         const nekretninaId = response.nekrId;
         nekr.id = nekretninaId;
-        this.nekretnine.push(nekretnina);
+        // sledeci red da li je nekr ili nekretnina
+        this.nekretnine.push(nekr);
         this.nekretnineUpdated.next(this.nekretnine.slice());
+        this.router.navigate(['/']);
       });
   }
 
-  getNekretnina(id: number) {
-    return this.nekretnine[id];
+  updateNekretnina(nekretnina: NekretninaModel) {
+    console.log(nekretnina.id);
+    const nekr = {id: nekretnina.id, naslov: nekretnina.naslov, opis: nekretnina.opis, kvadratura: nekretnina.kvadratura, cena: nekretnina.cena, slika: nekretnina.slika};
+    this.http.put<{message: string}>('http://localhost:3000/api/nekretnine/' + nekr.id, nekr)
+      .subscribe(response => {
+        console.log(response.message);
+        const updatedNekretnine = this.nekretnine.slice();
+        const oldIndex = updatedNekretnine.findIndex(n => n.id === nekr.id);
+        updatedNekretnine[oldIndex] = nekr;
+        this.nekretnine = updatedNekretnine;
+        this.nekretnineUpdated.next(this.nekretnine.slice());
+        this.router.navigate(['/']);
+      });
   }
+
+  getNekretnina(id: string) {
+    return this.http
+      .get<{_id: string, naslov: string, opis: string, cena: number, kvadratura: number, slika: string}>('http://localhost:3000/api/nekretnine/' + id);
+  }
+
+  onDeleteNekretnina(id: string) {
+    // const nekrId = this.nekretnine[id].id;
+    // console.log(nekrId);
+    this.http.delete('http://localhost:3000/api/nekretnine/' + id)
+      .subscribe(() => {
+        console.log('Deleted!');
+        const updatedNekretnine = this.nekretnine.filter(nekretnina => nekretnina.id !== id);
+        this.nekretnine = updatedNekretnine;
+        this.nekretnineUpdated.next(this.nekretnine.slice());
+        this.router.navigate(['/']);
+      });
+  }
+
+
+
 }

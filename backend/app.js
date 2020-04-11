@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const Nekretnina = require('./models/nekretnina');
 const mongoose = require('mongoose');
+const nekretnineRoutes = require("./routes/nekretnine");
 
 mongoose.connect("mongodb://localhost/itehprojekat")
   .then(() => {
@@ -23,31 +23,5 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/api/nekretnine", (req, res, next)=>{
-  Nekretnina.find().then(documents => {
-    res.status(200).json({
-      message: 'Uspesno!',
-      nekretnine: documents
-    });
-  });
-});
-
-app.post("/api/nekretnine", (req, res, next) => {
-  const nekretnina = new Nekretnina({
-    naslov: req.body.naslov,
-    opis: req.body.opis,
-    kvadratura: req.body.kvadratura,
-    cena: req.body.cena,
-    slika: req.body.slika
-  });
-  console.log(nekretnina);
-  nekretnina.save().then(result => {
-    res.status(201).json({
-      message: 'Nekretnina dodata u bazu!',
-      nekrId: result._id
-    });
-  });
-  // next();
-});
-
+app.use(nekretnineRoutes);
 module.exports = app;

@@ -1,5 +1,5 @@
 export interface NekretninaModel {
-  id: number;
+  id: string;
   naslov: string;
   opis: string;
   kvadratura: number;

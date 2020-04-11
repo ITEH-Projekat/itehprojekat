@@ -47,10 +47,10 @@
             formControlName="slika">
         </div>
         <button
-          type="submit"
-          class="btn btn-primary"
           [disabled]="!formAdd.valid"
-          >Postavi oglas</button>
+          class="btn btn-primary"
+          type="submit"
+        >{{this.editMode ? 'Izmeni':'Dodaj'}}</button>
       </form>
     </div>
   </div>
