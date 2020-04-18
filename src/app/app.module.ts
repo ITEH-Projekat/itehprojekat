@@ -10,10 +10,12 @@ import {NekretnineService} from './nekretnine/nekretnine.service';
 import { DodajNekretninuComponent } from './nekretnine/dodaj-nekretninu/dodaj-nekretninu.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { JumboComponent } from './jumbo/jumbo.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NekretninaDetailComponent } from './nekretnine/nekretnina-detail/nekretnina-detail.component';
 import { NekretnineListComponent } from './nekretnine/nekretnine-list/nekretnine-list.component';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
+import {AuthComponent} from './auth/auth.component';
+import {AuthInterceptor} from './auth/auth-interceptor';
 
 
 @NgModule({
@@ -26,15 +28,17 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
     PageNotFoundComponent,
     JumboComponent,
     NekretninaDetailComponent,
-    NekretnineListComponent
+    NekretnineListComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
-  providers: [NekretnineService],
+  providers: [NekretnineService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

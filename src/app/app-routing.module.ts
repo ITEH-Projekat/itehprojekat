@@ -5,6 +5,7 @@ import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {DodajNekretninuComponent} from './nekretnine/dodaj-nekretninu/dodaj-nekretninu.component';
 import {JumboComponent} from './jumbo/jumbo.component';
 import {NekretninaDetailComponent} from './nekretnine/nekretnina-detail/nekretnina-detail.component';
+import {AuthComponent} from './auth/auth.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
       {path: ':id/edit', component: DodajNekretninuComponent},
       {path: ':id', component: NekretninaDetailComponent}
     ]},
+  {path: 'auth', component: AuthComponent},
   {path: 'not-found', component: PageNotFoundComponent},
   {path: '**', redirectTo: '/not-found'}
 ];

@@ -4,6 +4,8 @@ const Nekretnina = require('../models/nekretnina');
 
 const router = express.Router();
 
+const proveriAuth = require("../middleware/proveri-auth");
+
 router.get("/api/nekretnine", (req, res, next)=>{
   Nekretnina.find().then(documents => {
     console.log(documents);
@@ -14,7 +16,7 @@ router.get("/api/nekretnine", (req, res, next)=>{
   });
 });
 
-router.post("/api/nekretnine", (req, res, next) => {
+router.post("/api/nekretnine", proveriAuth, (req, res, next) => {
   const nekretnina = new Nekretnina({
     naslov: req.body.naslov,
     opis: req.body.opis,
@@ -32,7 +34,7 @@ router.post("/api/nekretnine", (req, res, next) => {
   // next();
 });
 
-router.delete("/api/nekretnine/:id", (req, res, next) => {
+router.delete("/api/nekretnine/:id", proveriAuth, (req, res, next) => {
   Nekretnina.deleteOne({_id: req.params.id}).then(result => {
     console.log(result);
     res.status(200).json({message: 'Nekretnina deleted!'});
@@ -49,7 +51,7 @@ router.get("/api/nekretnine/:id", (req, res, next) => {
   });
 });
 
-router.put("/api/nekretnine/:id", (req, res, next) => {
+router.put("/api/nekretnine/:id", proveriAuth, (req, res, next) => {
   Nekretnina.updateOne({_id: req.body.id}, req.body).then(result => {
     console.log(result);
     res.status(200).json({message: 'Update successful!'});
