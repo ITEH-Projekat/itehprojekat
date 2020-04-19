@@ -25,6 +25,7 @@ export class NekretninaDetailComponent implements OnInit {
         this.id = params.id;
         this.nekretnineService.getNekretnina(this.id)
           .subscribe(data => {
+            // tslint:disable-next-line:max-line-length
             this.nekretnina = {id: data._id, naslov: data.naslov, slika: data.slika, cena: data.cena, kvadratura: data.kvadratura, opis: data.opis};
           });
         this.isLoading = false;

@@ -16,7 +16,7 @@ router.get("/api/nekretnine", (req, res, next)=>{
   });
 });
 
-router.post("/api/nekretnine", proveriAuth, (req, res, next) => {
+router.post("/api/nekretnine", (req, res, next) => {
   const nekretnina = new Nekretnina({
     naslov: req.body.naslov,
     opis: req.body.opis,
@@ -51,7 +51,7 @@ router.get("/api/nekretnine/:id", (req, res, next) => {
   });
 });
 
-router.put("/api/nekretnine/:id", proveriAuth, (req, res, next) => {
+router.put("/api/nekretnine/:id", (req, res, next) => {
   Nekretnina.updateOne({_id: req.body.id}, req.body).then(result => {
     console.log(result);
     res.status(200).json({message: 'Update successful!'});

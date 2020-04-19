@@ -16,7 +16,7 @@ import { NekretnineListComponent } from './nekretnine/nekretnine-list/nekretnine
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {AuthComponent} from './auth/auth.component';
 import {AuthInterceptor} from './auth/auth-interceptor';
-
+import {LoadingSpinnerComponent} from './spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,8 @@ import {AuthInterceptor} from './auth/auth-interceptor';
     JumboComponent,
     NekretninaDetailComponent,
     NekretnineListComponent,
-    AuthComponent
+    AuthComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

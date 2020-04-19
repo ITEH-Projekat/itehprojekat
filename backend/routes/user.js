@@ -11,9 +11,14 @@ router.post("/api/users/signup", (req, res, next) => {
       password: hash
     });
     user.save().then(podaci => {
+      const token = jwt.sign(
+        {email: user.email, userId: user._id},
+        'secret_this_should_be_very_long',
+        {expiresIn: 3600});
       res.status(201).json({
-        poruka: 'User je kreiran',
-        podaci: podaci
+        // poruka: 'User je kreiran',
+        // podaci: podaci
+        token: token
       });
     }).catch(err => {
       res.status(500).json({
@@ -38,7 +43,7 @@ router.post("/api/users/login", (req, res, next) => {
     const token = jwt.sign(
       {email: userZaVracanje.email, userId: userZaVracanje._id},
       'secret_this_should_be_very_long',
-      {expiresIn: '1h'});
+      {expiresIn: 3600});
     res.status(200).json({
       token: token
     });
