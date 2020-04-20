@@ -6,13 +6,14 @@ import {DodajNekretninuComponent} from './nekretnine/dodaj-nekretninu/dodaj-nekr
 import {JumboComponent} from './jumbo/jumbo.component';
 import {NekretninaDetailComponent} from './nekretnine/nekretnina-detail/nekretnina-detail.component';
 import {AuthComponent} from './auth/auth.component';
+import {AuthGuard} from './auth/auth-guard';
 
 
 const routes: Routes = [
   {path: '', redirectTo: '/nekretnine', pathMatch: 'full'},
   {path: 'nekretnine', component: NekretnineComponent, children: [
       {path: '', component: JumboComponent},
-      {path: 'new', component: DodajNekretninuComponent},
+      {path: 'new', component: DodajNekretninuComponent, canActivate:[AuthGuard]},
       {path: ':id/edit', component: DodajNekretninuComponent},
       {path: ':id', component: NekretninaDetailComponent}
     ]},

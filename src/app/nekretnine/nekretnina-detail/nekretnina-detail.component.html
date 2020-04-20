@@ -33,8 +33,8 @@
           <p class="card-text">{{nekretnina?.opis}}</p>
           <p class="card-text">{{nekretnina?.kvadratura}} m2 - {{nekretnina?.cena}} €</p>
           <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-          <button class="btn btn-danger" (click)="onDeleteNekretnina(nekretnina.id)">Obrisi oglas</button>
-          <button class="btn btn-primary" (click)="onUpdateNekretnina(nekretnina.id)">Izmeni oglas</button>
+          <button *ngIf="isAuthenticated" class="btn btn-danger" (click)="onDeleteNekretnina(nekretnina.id)">Obrisi oglas</button>
+          <button *ngIf="isAuthenticated" class="btn btn-primary" (click)="onUpdateNekretnina(nekretnina.id)">Izmeni oglas</button>
         </div>
       </div>
     </div>

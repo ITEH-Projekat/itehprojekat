@@ -34,7 +34,7 @@ router.post("/api/nekretnine", (req, res, next) => {
   // next();
 });
 
-router.delete("/api/nekretnine/:id", proveriAuth, (req, res, next) => {
+router.delete("/api/nekretnine/:id", (req, res, next) => {
   Nekretnina.deleteOne({_id: req.params.id}).then(result => {
     console.log(result);
     res.status(200).json({message: 'Nekretnina deleted!'});
