@@ -5,4 +5,5 @@ export interface NekretninaModel {
   kvadratura: number;
   cena: number;
   slika: string;
+  user: string;
 }

@@ -19,6 +19,8 @@ router.post("/api/users/signup", (req, res, next) => {
         // poruka: 'User je kreiran',
         // podaci: podaci
         token: token
+        // expiresIn: 3600,
+        // userId: user._id
       });
     }).catch(err => {
       res.status(500).json({
@@ -46,6 +48,8 @@ router.post("/api/users/login", (req, res, next) => {
       {expiresIn: 3600});
     res.status(200).json({
       token: token
+      // expiresIn: 3600,
+      // userId: userZaVracanje._id
     });
   }).catch(err => {
     return res.status(401).json({poruka: 'Autentikacija nije uspela'});

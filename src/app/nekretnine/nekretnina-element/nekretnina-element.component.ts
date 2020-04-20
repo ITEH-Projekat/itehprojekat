@@ -27,7 +27,7 @@ export class NekretninaElementComponent implements OnInit {
     this.nekretnineService.getNekretnina(this.index)
       .subscribe(data => {
         // tslint:disable-next-line:max-line-length
-        this.nekretnina = {id: data._id, naslov: data.naslov, slika: data.slika, cena: data.cena, kvadratura: data.kvadratura, opis: data.opis};
+        this.nekretnina = {id: data._id, naslov: data.naslov, slika: data.slika, cena: data.cena, kvadratura: data.kvadratura, opis: data.opis, user: data.user};
       });
     this.router.navigate(['/nekretnine', this.index]);
   }

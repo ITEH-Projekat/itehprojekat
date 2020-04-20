@@ -36,7 +36,8 @@ export class DodajNekretninuComponent implements OnInit {
               slika: data.slika,
               cena: data.cena,
               kvadratura: data.kvadratura,
-              opis: data.opis
+              opis: data.opis,
+              user: data.user
             };
 
             this.formAdd = new FormGroup({

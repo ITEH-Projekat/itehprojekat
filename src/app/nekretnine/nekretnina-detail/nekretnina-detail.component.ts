@@ -29,18 +29,20 @@ export class NekretninaDetailComponent implements OnInit {
         this.nekretnineService.getNekretnina(this.id)
           .subscribe(data => {
             // tslint:disable-next-line:max-line-length
-            this.nekretnina = {id: data._id, naslov: data.naslov, slika: data.slika, cena: data.cena, kvadratura: data.kvadratura, opis: data.opis};
+            this.nekretnina = {id: data._id, naslov: data.naslov, slika: data.slika, cena: data.cena, kvadratura: data.kvadratura, opis: data.opis, user: data.user};
+            this.authService.user.subscribe(user => {
+              if (user) {
+                if (user.id === this.nekretnina.user) {
+                  this.isAuthenticated = true;
+                }
+              } else {
+                this.isAuthenticated = false;
+              }
+            });
           });
         this.isLoading = false;
       }
     );
-    this.authService.user.subscribe(user => {
-      if (user) {
-        this.isAuthenticated = true;
-      } else {
-        this.isAuthenticated = false;
-      }
-    });
   }
 
   // onDeleteNekretnina() {

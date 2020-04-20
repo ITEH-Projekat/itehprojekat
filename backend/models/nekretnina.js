@@ -5,7 +5,8 @@ const nekretninaSchema = mongoose.Schema({
   opis: String,
   kvadratura: Number,
   cena: Number,
-  slika: String
+  slika: String,
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true}
 });
 
 module.exports = mongoose.model("Nekretnina", nekretninaSchema);

@@ -26,11 +26,13 @@ export class NekretnineService {
            kvadratura: nekretnina.kvadratura,
            cena: nekretnina.cena,
            slika: nekretnina.slika,
-           id: nekretnina._id
+           id: nekretnina._id,
+            user: nekretnina.user
           };
         });
       }))
       .subscribe((transformedNekr) => {
+        console.log(transformedNekr);
         this.nekretnine = transformedNekr;
         console.log(this.nekretnine);
         this.nekretnineUpdated.next(this.nekretnine.slice());
@@ -39,7 +41,7 @@ export class NekretnineService {
   }
 
   addNekretnina(nekretnina: NekretninaModel) {
-    const nekr = {id: null, naslov: nekretnina.naslov, opis: nekretnina.opis, kvadratura: nekretnina.kvadratura, cena: nekretnina.cena, slika: nekretnina.slika};
+    const nekr = {id: null, naslov: nekretnina.naslov, opis: nekretnina.opis, kvadratura: nekretnina.kvadratura, cena: nekretnina.cena, slika: nekretnina.slika, user: nekretnina.user};
     this.http.post<{message: string, nekrId: string}>('http://localhost:3000/api/nekretnine', nekr)
       .subscribe((response) => {
         const nekretninaId = response.nekrId;
@@ -53,7 +55,7 @@ export class NekretnineService {
 
   updateNekretnina(nekretnina: NekretninaModel) {
     console.log(nekretnina.id);
-    const nekr = {id: nekretnina.id, naslov: nekretnina.naslov, opis: nekretnina.opis, kvadratura: nekretnina.kvadratura, cena: nekretnina.cena, slika: nekretnina.slika};
+    const nekr = {id: nekretnina.id, naslov: nekretnina.naslov, opis: nekretnina.opis, kvadratura: nekretnina.kvadratura, cena: nekretnina.cena, slika: nekretnina.slika, user: nekretnina.user};
     this.http.put<{message: string}>('http://localhost:3000/api/nekretnine/' + nekr.id, nekr)
       .subscribe(response => {
         console.log(response.message);
@@ -68,7 +70,7 @@ export class NekretnineService {
 
   getNekretnina(id: string) {
     return this.http
-      .get<{_id: string, naslov: string, opis: string, cena: number, kvadratura: number, slika: string}>('http://localhost:3000/api/nekretnine/' + id);
+      .get<{_id: string, naslov: string, opis: string, cena: number, kvadratura: number, slika: string, user: string}>('http://localhost:3000/api/nekretnine/' + id);
   }
 
   onDeleteNekretnina(id: string) {
