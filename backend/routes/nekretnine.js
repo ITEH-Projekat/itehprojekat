@@ -13,7 +13,11 @@ router.get("/api/nekretnine", (req, res, next)=>{
       message: 'Uspesno!',
       nekretnine: documents
     });
-  });
+  }).catch(error => {
+    res.status(500).json({
+      message: "Neuspesno povlacenje nekretnina"
+    })
+  });;
 });
 
 router.post("/api/nekretnine", proveriAuth, (req, res, next) => {
@@ -31,6 +35,10 @@ router.post("/api/nekretnine", proveriAuth, (req, res, next) => {
       message: 'Nekretnina dodata u bazu!',
       nekrId: result._id
     });
+  }).catch(error => {
+    res.status(500).json({
+      message: "Kreiranje oglasa neuspesno"
+    })
   });
   // next();
 });
@@ -43,7 +51,11 @@ router.delete("/api/nekretnine/:id", proveriAuth, (req, res, next) => {
     } else {
       res.status(401).json({message: 'Not authorized!'});
     }
-  });
+  }).catch(error => {
+    res.status(500).json({
+      message: "Greska u brisanju nekretnine"
+    })
+  });;
 });
 
 router.get("/api/nekretnine/:id", (req, res, next) => {
@@ -53,7 +65,11 @@ router.get("/api/nekretnine/:id", (req, res, next) => {
     }else{
       res.status(404).json({message: 'Page not found!'});
     }
-  });
+  }).catch(error => {
+    res.status(500).json({
+      message: "Povlacenje jednog posta neuspesno"
+    })
+  });;
 });
 
 router.put("/api/nekretnine/:id", proveriAuth, (req, res, next) => {
@@ -64,6 +80,10 @@ router.put("/api/nekretnine/:id", proveriAuth, (req, res, next) => {
     } else {
       res.status(401).json({message: 'Not authorized!'});
     }
+  }).catch(error => {
+    res.status(500).json({
+      message: "Izmena neuspesna"
+    })
   });
 });
 

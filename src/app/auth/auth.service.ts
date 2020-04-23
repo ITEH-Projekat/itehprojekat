@@ -67,13 +67,18 @@ export class AuthService {
 
   private handleError(errorResponse: HttpErrorResponse) {
     let errorMessage = 'Nepoznata greska!';
-    if (!errorResponse.error || !errorResponse.error.error) {
+    if (!errorResponse.error) {
       return throwError(errorMessage);
     }
-    switch (errorResponse.error.error.message) {
-      case 'EMAIL_EXISTS':
+    switch (errorResponse.error.message) {
+      case 'Uneti podaci nisu korektni':
         errorMessage = 'Email vec postoji';
+        break;
+      case 'Autentikacija nije uspela':
+        errorMessage = 'Uneti podaci nisu odgovarajuci, molimo pokusajte ponovo';
+        break;
     }
+
     return throwError(errorMessage);
   }
 

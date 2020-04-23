@@ -39,7 +39,8 @@ import {LoadingSpinnerComponent} from './spinner/loading-spinner.component';
     HttpClientModule,
     FormsModule
   ],
-  providers: [NekretnineService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
+  providers: [NekretnineService,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

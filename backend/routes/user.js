@@ -24,7 +24,7 @@ router.post("/api/users/signup", (req, res, next) => {
       });
     }).catch(err => {
       res.status(500).json({
-        error: err
+          message: "Uneti podaci nisu korektni"
       });
     });
   });
@@ -34,13 +34,13 @@ router.post("/api/users/login", (req, res, next) => {
   let userZaVracanje;
   User.findOne({email: req.body.email}).then(user => {
     if(!user){
-      return res.status(401).json({poruka: 'Autentikacija nije uspela'});
+      return res.status(401).json({message: 'Autentikacija nije uspela'});
     }
     userZaVracanje = user;
     return bcrypt.compare(req.body.password, user.password);
   }).then(rezultat => {
     if(!rezultat){
-      return res.status(401).json({poruka: 'Autentikacija nije uspela'});
+      return res.status(401).json({message: 'Autentikacija nije uspela'});
     }
     const token = jwt.sign(
       {email: userZaVracanje.email, userId: userZaVracanje._id},
@@ -52,7 +52,10 @@ router.post("/api/users/login", (req, res, next) => {
       // userId: userZaVracanje._id
     });
   }).catch(err => {
-    return res.status(401).json({poruka: 'Autentikacija nije uspela'});
+    return res.status(401).json({
+      // poruka: 'Autentikacija nije uspela'
+      message: 'Autentikacija nije uspela'
+    });
   });
 });
 
