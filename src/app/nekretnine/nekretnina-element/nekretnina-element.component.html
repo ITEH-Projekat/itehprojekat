@@ -1,8 +1,25 @@
-<div class="card" style="width: 18rem;">
-  <img src="{{nekretnina.slika}}" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">{{nekretnina.naslov}}</h5>
-    <p class="card-text">{{nekretnina.kvadratura}} m2 - {{nekretnina.cena}} €</p>
-    <a [routerLink]="[index]" class="btn btn-primary">Detalji</a>
+<div class="row justify-content-center">
+  <div class="col-12">
+    <div class="card shadow-lg">
+      <img src="{{nekretnina.slika}}" class="img-thumbnail img-responsive" alt="...">
+      <div class="card-body">
+        <div id="cenaKv" class="text-center mb-3">
+          <p class="card-text">{{nekretnina.kvadratura}} m2 - {{nekretnina.cena}} €</p>
+        </div>
+        <h5 class="card-title">{{nekretnina.naslov}}</h5>
+        <a [routerLink]="[index]" class="btn btn-dark">Detalji</a>
+      </div>
+    </div>
   </div>
 </div>
+
+
+<!--<div class="card bg-dark text-white">-->
+<!--  <img class="card-img img-fluid" src="{{nekretnina.slika}}" alt="Card image">-->
+<!--  <div class="card-img-overlay">-->
+<!--    <h5 class="card-title">{{nekretnina.naslov}}</h5>-->
+<!--    <p class="card-text">{{nekretnina.kvadratura}} m2 - {{nekretnina.cena}} €</p>-->
+<!--    <a [routerLink]="[index]" class="btn btn-dark">Detalji</a>-->
+<!--    <p class="card-text">Last updated 3 mins ago</p>-->
+<!--  </div>-->
+<!--</div>-->

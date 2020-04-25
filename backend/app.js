@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const nekretnineRoutes = require("./routes/nekretnine");
 const userRoutes = require("./routes/user");
 
-mongoose.connect("mongodb://localhost/itehprojekat")
+mongoose.connect("mongodb://localhost/itehprojekat", {useUnifiedTopology: true, useNewUrlParser: true})
   .then(() => {
     console.log('Connected to database!');
   }).catch(() => {
