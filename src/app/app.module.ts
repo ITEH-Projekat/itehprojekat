@@ -17,6 +17,7 @@ import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/h
 import {AuthComponent} from './auth/auth.component';
 import {AuthInterceptor} from './auth/auth-interceptor';
 import {LoadingSpinnerComponent} from './spinner/loading-spinner.component';
+import { NekretninaPretragaComponent } from './nekretnine/nekretnina-pretraga/nekretnina-pretraga.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {LoadingSpinnerComponent} from './spinner/loading-spinner.component';
     NekretninaDetailComponent,
     NekretnineListComponent,
     AuthComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    NekretninaPretragaComponent
   ],
   imports: [
     BrowserModule,
