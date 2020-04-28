@@ -87,5 +87,12 @@ export class NekretnineService {
   }
 
 
-
+  searchNekretnine(valueParametri: {kvadraturaOd: number, kvadraturaDo: number, cenaOd: number, cenaDo: number}) {
+    this.http.post<{nekretnine: NekretninaModel[], poruka: string}>('http://localhost:3000/api/nekretnine/pretraga', {valueParametri})
+      .subscribe(response => {
+        console.log(response.poruka);
+        this.nekretnine = response.nekretnine;
+        this.nekretnineUpdated.next(this.nekretnine.slice());
+      });
+  }
 }

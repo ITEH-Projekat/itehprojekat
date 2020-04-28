@@ -20,6 +20,37 @@ router.get("/api/nekretnine", (req, res, next)=>{
   });;
 });
 
+router.post("/api/nekretnine/pretraga", (req, res, next) => {
+  const parametri = req.body.valueParametri;
+  let kvOd = parametri.kvadraturaOd;
+  let kvDo = parametri.kvadraturaDo;
+  let cenaOd = parametri.cenaOd;
+  let cenaDo = parametri.cenaDo;
+  let query = {};
+
+  if (cenaOd && cenaDo){
+    query.cena = {$gte: +cenaOd, $lte: +cenaDo};
+  }else{
+    if (cenaOd) query.cena = {$gte: +cenaOd};
+    if (cenaDo) query.cena = {$lte: +cenaDo};
+  }
+
+  if (kvOd && kvDo){
+    query.kvadratura = {$gte: +kvOd, $lte: +kvDo};
+  }else{
+    if (kvOd) query.kvadratura = {$gte: +kvOd};
+    if (kvDo) query.kvadratura = {$lte: +kvDo};
+  }
+
+  Nekretnina.find(query).then(nekretnine => {
+    // console.log(nekretnine);
+    res.status(200).json({
+      nekretnine: nekretnine,
+      poruka: "Uspesna pretraga"
+    });
+  });
+});
+
 router.post("/api/nekretnine", proveriAuth, (req, res, next) => {
   const nekretnina = new Nekretnina({
     naslov: req.body.naslov,
