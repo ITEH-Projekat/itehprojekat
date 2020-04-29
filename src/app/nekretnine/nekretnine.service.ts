@@ -77,10 +77,11 @@ export class NekretnineService {
   }
 
   updateNekretnina(nekretnina: NekretninaModel) {
-    // console.log(nekretnina.id);
+    console.log('id ovaj sad: ' + nekretnina.id);
     const nekr = {id: nekretnina.id, naslov: nekretnina.naslov, opis: nekretnina.opis, kvadratura: nekretnina.kvadratura, cena: nekretnina.cena, slika: nekretnina.slika, user: nekretnina.user};
     let nekretninaData: NekretninaModel | FormData;
-    if (typeof(nekretnina.slika) === 'object') {
+    if (typeof(nekr.slika) === 'object') {
+      console.log('usao u form data');
       nekretninaData = new FormData();
       nekretninaData.append('naslov', nekretnina.naslov);
       nekretninaData.append('id', nekretnina.id);
@@ -92,30 +93,23 @@ export class NekretnineService {
       nekretninaData.append('user', nekretnina.user);
       nekretninaData.append('slika', nekretnina.slika);
     } else {
-      // tslint:disable-next-line:max-line-length
-      nekretninaData = {
-        id: nekretnina.id,
-        naslov: nekretnina.naslov,
-        opis: nekretnina.opis,
-        kvadratura: nekretnina.kvadratura,
-        cena: nekretnina.cena,
-        slika: nekretnina.slika,
-        user: nekretnina.user
-      };
+      console.log('usao u ne form data');
+      nekretninaData = nekr;
     }
-    this.http.put<{message: string}>('http://localhost:3000/api/nekretnine/' + nekr.id, nekretninaData)
+    this.http.put<{message: string, slika: string}>('http://localhost:3000/api/nekretnine/' + nekr.id, nekretninaData)
       .subscribe(response => {
         console.log(response.message);
         const updatedNekretnine = this.nekretnine.slice();
         const oldIndex = updatedNekretnine.findIndex(n => n.id === nekretnina.id);
+        // console.log('slika: ' + response.slika);
         const nekretninica: NekretninaModel = {
           id: nekretnina.id,
           naslov: nekretnina.naslov,
           opis: nekretnina.opis,
           kvadratura: nekretnina.kvadratura,
           cena: nekretnina.cena,
-          // slika: response.slika,
-          slika: '',
+          slika: response.slika,
+          // slika: '',
           user: nekretnina.user
         };
         updatedNekretnine[oldIndex] = nekretninica;

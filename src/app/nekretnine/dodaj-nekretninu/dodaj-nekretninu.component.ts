@@ -23,11 +23,9 @@ export class DodajNekretninuComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    console.log(this.editMode);
     this.route.paramMap.subscribe((paramMap) => {
       if (paramMap.has('id')) {
         this.editMode = true;
-        console.log(this.editMode);
         this.id = paramMap.get('id');
         this.nekretnineService.getNekretnina(this.id)
           .subscribe(data => {
@@ -51,6 +49,7 @@ export class DodajNekretninuComponent implements OnInit {
               // slika: new FormControl(this.nekretnina.slika, Validators.required)
               slika: new FormControl(this.nekretnina.slika, Validators.required, slikaValidator)
             });
+            this.imagePreview = this.nekretnina.slika;
           });
       } else {
         console.log(this.editMode);

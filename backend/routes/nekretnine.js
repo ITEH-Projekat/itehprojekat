@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const mongoose = require("mongoose");
 
 const Nekretnina = require('../models/nekretnina');
 
@@ -35,7 +36,7 @@ const proveriAuth = require("../middleware/proveri-auth");
 
 router.get("/api/nekretnine", (req, res, next)=>{
   Nekretnina.find().then(documents => {
-    console.log(documents);
+    // console.log(documents);
     res.status(200).json({
       message: 'Uspesno!',
       nekretnine: documents
@@ -143,11 +144,14 @@ router.get("/api/nekretnine/:id", (req, res, next) => {
 });
 
 router.put("/api/nekretnine/:id", multer({storage: storage}).single("slika"), proveriAuth,  (req, res, next) => {
-  console.log(req.file);
+  console.log("req.file: " + req.file);
   let imagepath = req.body.slika;
+  console.log("image path: " + imagepath);
   if(req.file) {
+    console.log("usao u req.file");
     const url = req.protocol + '://' + req.get("host");
     imagepath = url + "/images/" + req.file.filename;
+    console.log("image path2: " + imagepath);
   }
   const nekretnina = new Nekretnina({
     _id: req.body.id,
@@ -155,13 +159,15 @@ router.put("/api/nekretnine/:id", multer({storage: storage}).single("slika"), pr
     opis: req.body.opis,
     cena: req.body.cena,
     kvadratura: req.body.kvadratura,
-    slika: imagepath
+    slika: imagepath,
+    user: req.userData.userId
   });
-  console.log(nekretnina);
-  Nekretnina.updateOne({_id: req.body.id, user: req.userData.userId}, nekretnina).then(result => {
+  console.log("napravljena nekretnina: " + nekretnina);
+  console.log("userData: " + req.userData.userId);
+  Nekretnina.updateOne({_id: nekretnina._id, user: mongoose.Types.ObjectId(req.userData.userId)}, nekretnina).then(result => {
     console.log(result);
-    if(result.nModified > 0) {
-      res.status(200).json({message: 'Update successful!'});
+    if(result.n > 0) {
+      res.status(200).json({message: 'Update successful!', slika: nekretnina.slika});
     } else {
       res.status(401).json({message: 'Not authorized!'});
     }
