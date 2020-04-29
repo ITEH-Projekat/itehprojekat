@@ -1,8 +1,35 @@
 const express = require("express");
+const multer = require("multer");
 
 const Nekretnina = require('../models/nekretnina');
 
 const router = express.Router();
+
+const TIPOVI = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg'
+};
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = TIPOVI[file.mimetype];
+    let error = new Error("Invalid!");
+    if(isValid) {
+      error = null;
+    }
+    cb(error, "backend/images");
+  },
+  filename: (req, file, cb) => {
+    // const name = file.originalname.toLowerCase().split(' ').join('-');
+    // console.log("File: " + file);
+    // const ext = TIPOVI[file.mimetype];
+    // console.log("file.mimeType: " + file.mimetype);
+    // console.log("ext: " + ext);
+    // cb(null, name + '-' + Date.now() + '.' + ext);//
+    cb(null, file.originalname);
+  }
+});
 
 const proveriAuth = require("../middleware/proveri-auth");
 
@@ -51,20 +78,32 @@ router.post("/api/nekretnine/pretraga", (req, res, next) => {
   });
 });
 
-router.post("/api/nekretnine", proveriAuth, (req, res, next) => {
+router.post("/api/nekretnine", proveriAuth, multer({storage: storage}).single("slika") ,  (req, res, next) => {
+  const url = req.protocol + '://' + req.get("host");
+  // console.log("Url: " + url);
+  console.log(req.file);
   const nekretnina = new Nekretnina({
     naslov: req.body.naslov,
     opis: req.body.opis,
     kvadratura: req.body.kvadratura,
     cena: req.body.cena,
-    slika: req.body.slika,
+    slika: url + "/images/" + req.file.filename,
+    // slika: req.body.slika,
     user: req.userData.userId
   });
   console.log(nekretnina);
   nekretnina.save().then(result => {
     res.status(201).json({
       message: 'Nekretnina dodata u bazu!',
-      nekrId: result._id
+      nekretninaResponse: {
+        id: result._id,
+        naslov: result.naslov,
+        opis: result.opis,
+        kvadratura: result.kvadratura,
+        cena: result.cena,
+        user: result.user,
+        slika: result.slika
+      }
     });
   }).catch(error => {
     res.status(500).json({
@@ -103,8 +142,23 @@ router.get("/api/nekretnine/:id", (req, res, next) => {
   });;
 });
 
-router.put("/api/nekretnine/:id", proveriAuth, (req, res, next) => {
-  Nekretnina.updateOne({_id: req.body.id, user: req.userData.userId}, req.body).then(result => {
+router.put("/api/nekretnine/:id", multer({storage: storage}).single("slika"), proveriAuth,  (req, res, next) => {
+  console.log(req.file);
+  let imagepath = req.body.slika;
+  if(req.file) {
+    const url = req.protocol + '://' + req.get("host");
+    imagepath = url + "/images/" + req.file.filename;
+  }
+  const nekretnina = new Nekretnina({
+    _id: req.body.id,
+    naslov: req.body.naslov,
+    opis: req.body.opis,
+    cena: req.body.cena,
+    kvadratura: req.body.kvadratura,
+    slika: imagepath
+  });
+  console.log(nekretnina);
+  Nekretnina.updateOne({_id: req.body.id, user: req.userData.userId}, nekretnina).then(result => {
     console.log(result);
     if(result.nModified > 0) {
       res.status(200).json({message: 'Update successful!'});

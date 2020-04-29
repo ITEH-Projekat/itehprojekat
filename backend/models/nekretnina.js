@@ -5,7 +5,7 @@ const nekretninaSchema = mongoose.Schema({
   opis: String,
   kvadratura: Number,
   cena: Number,
-  slika: String,
+  slika: {type: String, required: true},
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true}
 });
 

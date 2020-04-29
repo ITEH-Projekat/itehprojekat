@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const nekretnineRoutes = require("./routes/nekretnine");
 const userRoutes = require("./routes/user");
+const path = require("path");
 
 mongoose.connect("mongodb://localhost/itehprojekat", {useUnifiedTopology: true, useNewUrlParser: true})
   .then(() => {
@@ -15,6 +16,8 @@ const app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+app.use("/images", express.static(path.join("backend/images")));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");

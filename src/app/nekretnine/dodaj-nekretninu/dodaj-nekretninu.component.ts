@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {NekretnineService} from '../nekretnine.service';
 import {ActivatedRoute} from '@angular/router';
 import {NekretninaModel} from '../nekretnina.model';
+import {slikaValidator} from './slika-validator.validator';
 
 @Component({
   selector: 'app-dodaj-nekretninu',
@@ -16,6 +17,7 @@ export class DodajNekretninuComponent implements OnInit {
   id: string;
   nekretnina: NekretninaModel;
   buttonValue = 'Dodaj';
+  imagePreview: string | ArrayBuffer;
 
   constructor(private nekretnineService: NekretnineService,
               private route: ActivatedRoute) { }
@@ -33,6 +35,7 @@ export class DodajNekretninuComponent implements OnInit {
             this.nekretnina = {
               id: data._id,
               naslov: data.naslov,
+              // slika: data.slika,
               slika: data.slika,
               cena: data.cena,
               kvadratura: data.kvadratura,
@@ -45,7 +48,8 @@ export class DodajNekretninuComponent implements OnInit {
               opis: new FormControl(this.nekretnina.opis, Validators.required),
               kvadratura: new FormControl(this.nekretnina.kvadratura, Validators.required),
               cena: new FormControl(this.nekretnina.cena, Validators.required),
-              slika: new FormControl(this.nekretnina.slika, Validators.required)
+              // slika: new FormControl(this.nekretnina.slika, Validators.required)
+              slika: new FormControl(this.nekretnina.slika, Validators.required, slikaValidator)
             });
           });
       } else {
@@ -60,7 +64,8 @@ export class DodajNekretninuComponent implements OnInit {
       opis: new FormControl(null, Validators.required),
       kvadratura: new FormControl(null, Validators.required),
       cena: new FormControl(null, Validators.required),
-      slika: new FormControl(null, Validators.required)
+      // slika: new FormControl(null, Validators.required)
+      slika: new FormControl(null, Validators.required, slikaValidator)
     });
   }
 
@@ -79,4 +84,14 @@ export class DodajNekretninuComponent implements OnInit {
     this.formAdd.reset();
   }
 
+  onImagePicked(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.formAdd.patchValue({slika: file});
+    this.formAdd.get('slika').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
 }
