@@ -72,7 +72,7 @@ export class AuthService {
     }
     switch (errorResponse.error.message) {
       case 'Uneti podaci nisu korektni':
-        errorMessage = 'Email vec postoji';
+        errorMessage = 'Korisnik sa unetim podacima vec postoji';
         break;
       case 'Autentikacija nije uspela':
         errorMessage = 'Uneti podaci nisu odgovarajuci, molimo pokusajte ponovo';

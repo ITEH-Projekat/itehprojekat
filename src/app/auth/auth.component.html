@@ -1,9 +1,9 @@
 <div class="container">
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <h2>{{isLoginMode ? 'Prijava' : 'Registracija'}}</h2>
+  <div class="row mt-5">
+    <div class="col-xs-10 offset-xs-1 col-md-6 offset-md-3">
+      <h1>{{isLoginMode ? 'Prijava' : 'Registracija'}}</h1>
     </div>
-    <div class="col-xs-12 col-md-6 offset-md-3">
+    <div class="col-xs-12 col-md-6 offset-md-3 mt-5">
       <div class="alert alert-danger" *ngIf="error !== null">
         <p>{{error}}</p>
       </div>
@@ -18,7 +18,7 @@
         </div>
         <div>
           <button class="btn btn-primary" type="submit" [disabled]="!authForm.valid">{{ isLoginMode ? 'Prijavi se' : 'Registruj se'}}</button> |
-          <button class="btn btn-primary" type="button" (click)="onSwitchMode()">Idi na {{isLoginMode ? 'registraciju' : 'prijavu'}}</button>
+          <button class="btn btn-outline-primary" type="button" (click)="onSwitchMode()">Idi na {{isLoginMode ? 'registraciju' : 'prijavu'}}</button>
         </div>
       </form>
     </div>

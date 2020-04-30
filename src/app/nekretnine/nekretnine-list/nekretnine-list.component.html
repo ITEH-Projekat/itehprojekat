@@ -1,5 +1,12 @@
-<div class="row mt-3">
-    <div class="col-lg-4 col-md-6" *ngFor="let nekretnina of nekretnine; let i = index">
-      <app-nekretnina-element [nekretnina]="nekretnina" [index]="nekretnina.id"></app-nekretnina-element>
-    </div>
+<div class="container">
+  <div class="row mt-3">
+      <div class="col-xs-12 col-md-6 mt-3" *ngFor="let nekretnina of nekretnine; let i = index">
+        <app-nekretnina-element [nekretnina]="nekretnina" [index]="nekretnina.id"></app-nekretnina-element>
+      </div>
+      <div class="col-12 text-center" *ngIf="nekretnine.length === 0">
+        <h1>Trenutno nema postavljenih oglasa</h1>
+        <h1>Dodajte novi:</h1>
+        <button class="btn btn-dark" routerLink="/nekretnine/new">Postavite oglas</button>
+      </div>
+  </div>
 </div>

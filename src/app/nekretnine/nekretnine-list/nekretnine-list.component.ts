@@ -11,6 +11,7 @@ import {NekretnineService} from '../nekretnine.service';
 export class NekretnineListComponent implements OnInit, OnDestroy {
   nekretnine: NekretninaModel[] = [];
   nekretnineSubscription: Subscription;
+  state = 'in';
 
   constructor(private nekretnineService: NekretnineService) { }
 

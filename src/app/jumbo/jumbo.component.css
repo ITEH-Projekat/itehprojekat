@@ -5,3 +5,9 @@
   padding-top: 5%;
   padding-bottom: 10%;
 }
+
+#dodajDugme {
+  color: #dd7631;
+  border-color: #dd7631;
+  font-weight: bold;
+}

@@ -3,6 +3,7 @@ import {NgForm} from '@angular/forms';
 import {AuthResponse, AuthService} from './auth.service';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-auth',
@@ -27,7 +28,7 @@ export class AuthComponent {
     const email = authForm.value.email;
     const password = authForm.value.password;
 
-    let authObs: Observable<AuthResponse>
+    let authObs: Observable<AuthResponse>;
 
     if (this.isLoginMode) {
       authObs = this.authService.login(email, password);
