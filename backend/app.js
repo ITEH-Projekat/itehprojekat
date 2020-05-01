@@ -5,7 +5,7 @@ const nekretnineRoutes = require("./routes/nekretnine");
 const userRoutes = require("./routes/user");
 const path = require("path");
 
-mongoose.connect("mongodb://localhost/itehprojekat", {useUnifiedTopology: true, useNewUrlParser: true})
+mongoose.connect("mongodb+srv://nemanja:gkGd8fNfrjeTXN3A@cluster0-aooej.mongodb.net/test?retryWrites=true&w=majority", {useUnifiedTopology: true, useNewUrlParser: true})
   .then(() => {
     console.log('Connected to database!');
   }).catch(() => {
