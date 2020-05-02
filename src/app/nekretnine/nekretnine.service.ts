@@ -4,6 +4,9 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {environment} from '../../environments/environment';
+
+const BACKEND_URL = environment.apiURL + 'nekretnine/';
 
 @Injectable()
 export class NekretnineService {
@@ -16,7 +19,7 @@ export class NekretnineService {
   nekretnine: NekretninaModel[] = [];
 
   getNekretnine() {
-    this.http.get<{message: string, nekretnine: any}>('http://localhost:3000/api/nekretnine')
+    this.http.get<{message: string, nekretnine: any}>(BACKEND_URL)
       .pipe(map((postData) => {
         console.log(postData.nekretnine);
         return postData.nekretnine.map(nekretnina => {
@@ -54,7 +57,7 @@ export class NekretnineService {
     nekretninaData.append('slika', nekretnina.slika);
     this.http
       .post<{message: string, nekretninaResponse: NekretninaModel}>(
-        'http://localhost:3000/api/nekretnine',
+        BACKEND_URL,
         nekretninaData)
       .subscribe((response) => {
         // tslint:disable-next-line:max-line-length
@@ -96,7 +99,7 @@ export class NekretnineService {
       console.log('usao u ne form data');
       nekretninaData = nekr;
     }
-    this.http.put<{message: string, slika: string}>('http://localhost:3000/api/nekretnine/' + nekr.id, nekretninaData)
+    this.http.put<{message: string, slika: string}>(BACKEND_URL + nekr.id, nekretninaData)
       .subscribe(response => {
         console.log(response.message);
         const updatedNekretnine = this.nekretnine.slice();
@@ -121,13 +124,13 @@ export class NekretnineService {
 
   getNekretnina(id: string) {
     return this.http
-      .get<{_id: string, naslov: string, opis: string, cena: number, kvadratura: number, slika: string, user: string}>('http://localhost:3000/api/nekretnine/' + id);
+      .get<{_id: string, naslov: string, opis: string, cena: number, kvadratura: number, slika: string, user: string}>(BACKEND_URL + id);
   }
 
   onDeleteNekretnina(id: string) {
     // const nekrId = this.nekretnine[id].id;
     // console.log(nekrId);
-    this.http.delete('http://localhost:3000/api/nekretnine/' + id)
+    this.http.delete(BACKEND_URL + id)
       .subscribe(() => {
         console.log('Deleted!');
         const updatedNekretnine = this.nekretnine.filter(nekretnina => nekretnina.id !== id);
@@ -139,7 +142,7 @@ export class NekretnineService {
 
 
   searchNekretnine(valueParametri: {kvadraturaOd: number, kvadraturaDo: number, cenaOd: number, cenaDo: number}) {
-    this.http.post<{nekretnine: NekretninaModel[], poruka: string}>('http://localhost:3000/api/nekretnine/pretraga', {valueParametri})
+    this.http.post<{nekretnine: NekretninaModel[], poruka: string}>(BACKEND_URL + 'pretraga', {valueParametri})
       .subscribe(response => {
         console.log(response.poruka);
         this.nekretnine = response.nekretnine;

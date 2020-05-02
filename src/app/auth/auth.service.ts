@@ -6,6 +6,9 @@ import {User} from './user.model';
 import {catchError, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import * as jwt_decode from 'jwt-decode';
+import {environment} from '../../environments/environment';
+
+const BACKEND_URL = environment.apiURL + 'users/';
 
 export interface AuthResponse {
   // email: string;
@@ -44,7 +47,7 @@ export class AuthService {
 
   createUser(email: string, password: string) {
     const user: AuthPodaciModel = {email, password};
-    return this.http.post<AuthResponse>('http://localhost:3000/api/users/signup', user)
+    return this.http.post<AuthResponse>(BACKEND_URL + 'signup', user)
       .pipe(catchError(this.handleError), tap(data => {
           // this.handleAuthentication(data.email, data.id, data.token, data.exp);
           this.handleAuthentication(data.token);
@@ -53,7 +56,7 @@ export class AuthService {
 
   login(email: string, password: string) {
     const user: AuthPodaciModel = {email, password};
-    return this.http.post<AuthResponse>('http://localhost:3000/api/users/login', user)
+    return this.http.post<AuthResponse>(BACKEND_URL + 'login', user)
       .pipe(catchError(this.handleError), tap(data => {
         // this.handleAuthentication(data.email, data.id, data.token, data.exp);
         this.handleAuthentication(data.token);
