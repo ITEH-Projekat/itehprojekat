@@ -1,5 +1,5 @@
 <div class="container">
-  <h3 class="display-4 text-center my-3">Postavite novi oglas</h3>
+  <h3 class="display-4 text-center my-3">{{this.editMode ? 'Izmenite oglas':'Postavite novi oglas'}}</h3>
   <div class="row">
     <div class="col-md-12">
       <form [formGroup]="formAdd" (ngSubmit)="onSubmitForm()" class="needs-validation" novalidate enctype="multipart/form-data">
